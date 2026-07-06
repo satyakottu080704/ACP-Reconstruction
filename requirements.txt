@@ -1,0 +1,95 @@
+# Acorn Atlas Floor Plan Generator - Requirements
+# Pinned for production reproducibility. Update deliberately; test on GPU box first.
+# Works on Python 3.10-3.13. On Python 3.13, several pins below need the newer
+# versions shown (older pins here have no cp313 wheel and fail to install).
+
+# ── Core ML ───────────────────────────────────────────────────────────────────────────
+# torch 2.6.0 is the first release with official Python 3.13 wheels; 0.21.0 is
+# the matching torchvision. On Python 3.10/3.11 these still work fine too.
+torch==2.6.0
+torchvision==0.21.0
+# ultralytics==8.2.50 (the version this model was trained with) hard-pins
+# numpy<2.0, which has NO Python 3.13 wheel -- an unresolvable conflict on
+# cp313. Newer ultralytics releases dropped that upper bound, so we let pip
+# resolve to whatever current release satisfies it. Loading an older
+# 8.2.x-trained checkpoint (best.pt) on a newer ultralytics is expected to
+# keep working (checkpoint format is backward compatible across 8.x).
+ultralytics>=8.3.0
+
+# Image processing
+# All four pins below are the first release of each with an official
+# Python 3.13 (cp313) wheel; older pins here fail to install on 3.13
+# (pip falls back to building from source, which needs a C compiler).
+numpy==2.1.0
+scipy==1.14.1          # pipeline.merge_results -- Hungarian label<->room matching
+opencv-python==4.12.0.88
+Pillow==11.0.0
+
+# Visio Export - Windows COM automation (Windows only)
+# pywin32==306 has no cp313 wheel; 312 is the first confirmed Python 3.13 build.
+pywin32==312; sys_platform == "win32"
+
+# Visio Export - native renderer for Linux/macOS (no Visio required)
+aspose-diagram==24.1.0
+
+# HTTP / env
+httpx==0.27.0
+requests==2.32.3
+python-dotenv==1.0.1
+python-dateutil==2.9.0
+
+# Plans HTTP service (automation/render_service.py)
+Flask==3.0.3
+waitress==3.0.0          # production WSGI server for render_service.py (was missing)
+gunicorn==22.0.0; sys_platform != "win32"
+
+# Draw / v2 API service (api/app.py -- FastAPI plan-rendering endpoint)
+fastapi==0.111.1
+uvicorn==0.30.1
+python-multipart==0.0.9
+
+# Data
+pandas==2.2.3          # 2.2.2 has no cp313 wheel; 2.2.3 is the first that does
+openpyxl==3.1.5
+
+# Plan output formats (SVG / PDF / drawio)
+reportlab==4.2.2
+svgwrite==1.4.3
+
+# AI providers (Alpha Tracker / Automation pipeline)
+openai==1.35.14
+groq==0.9.0
+anthropic==0.29.0
+
+# Config hot-reload (optional, used by utils/config_manager.py)
+watchdog==4.0.1
+
+# Tests
+pytest==8.2.2
+typing-extensions==4.12.2
+
+# Optional - YOLO training
+tqdm==4.66.4
+matplotlib==3.9.2      # 3.9.1 has no cp313 wheel; 3.9.2 is the first that does
+
+# Optional - v2 geometry engine (graceful fallback if absent)
+# shapely==2.0.5
+# networkx==3.3
+
+# Optional - DXF export
+# ezdxf==1.3.4
+
+# Optional - v2 API / UI
+# streamlit==1.36.0
+
+# Optional - ONNX torch-free serving
+# onnx==1.16.1
+# onnxruntime-gpu==1.18.1   # GPU variant; use onnxruntime==1.18.1 for CPU-only
+
+# Optional - OCR for room labels (v2 ocr_rooms.py)
+# pytesseract==0.3.13       # requires Tesseract OCR installed on the OS
+# easyocr==1.7.1
+# paddleocr==2.8.1
+
+# Optional - watershed strategy
+# scikit-image==0.24.0

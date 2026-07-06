@@ -1,0 +1,18 @@
+{
+  "versions": [
+    {
+      "version": 1,
+      "path": "models/weights/best.pt",
+      "sha256": "59fdc4dea2ab26b7c839160f56cb09ea8f925b91e4cf08e68af7596897cc222c",
+      "box_map50": 0.883,
+      "mask_map50": 0.803,
+      "epoch": 50,
+      "dataset": "datasets/new_final_yolo",
+      "notes": "50-epoch continue-training (Kaggle, YOLOv11m-seg, imgsz=1280, AdamW). New Final YOLO: 9,482 imgs, 6 classes [acm,door,floor,room,stairs,walls]. Training args: batch=4, lr0=0.0001, cos_lr, patience=20.",
+      "registered_at": "2026-06-29T13:38:10.515861+00:00",
+      "promoted": true
+    }
+  ],
+  "best": 1,
+  "best_version": 1
+}
